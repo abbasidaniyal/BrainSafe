@@ -1,4 +1,4 @@
-# BabyShield - AI-Powered Video Content Safety Platform# BabyShield Chrome Extension
+# BrainSafe - AI-Powered Video Content Safety Platform# BrainSafe Chrome Extension
 
 
 
@@ -20,7 +20,7 @@ This is a monorepo containing three interconnected components that work together
 
 ```- **Safety Warnings**: Shows alerts and pauses inappropriate content
 
-babyshield/
+brainsafe/
 
 ├── extension/          # Chrome Extension - Frontend client## Installation
 
@@ -32,9 +32,9 @@ babyshield/
 
 ```3. Click "Load unpacked extension" button
 
-4. Select the `extension` folder (not the root `babyshield` folder)
+4. Select the `extension` folder (not the root `brainsafe` folder)
 
-### 🔧 Components Overview5. The BabyShield extension will appear in your browser toolbar
+### 🔧 Components Overview5. The BrainSafe extension will appear in your browser toolbar
 
 
 
@@ -44,7 +44,7 @@ babyshield/
 
 | **Chrome Extension** | JavaScript, HTML, CSS | Browser-based video interception and safety controls | ✅ Complete |1. After installation, open the `extension/test-page.html` file in Chrome
 
-| **Backend API** | Django, Python, AI/ML | Video content analysis and safety scoring | 🚧 In Development |2. Click the BabyShield extension icon to open the control panel
+| **Backend API** | Django, Python, AI/ML | Video content analysis and safety scoring | 🚧 In Development |2. Click the BrainSafe extension icon to open the control panel
 
 | **SDK Agent** | Python/Node.js | Integration toolkit for third-party platforms | 📋 Planned |3. Play the test videos to see different safety behaviors:
 
@@ -76,7 +76,7 @@ babyshield/
 
 git clone <repository-url>   - **Warnings**: Shows alerts for inappropriate content
 
-cd babyshield
+cd brainsafe
 
 ```## Development
 
@@ -86,7 +86,7 @@ cd babyshield
 
 ```bash```
 
-cd extensionbabyshield/
+cd extensionbrainsafe/
 
 # Follow extension/README.md for installation├── extension/           # Chrome Extension
 
@@ -126,7 +126,7 @@ cd sdk-agent
 
 ---**Current Status**: Uses mock API responses for demonstration
 
-**API Endpoint**: `https://api.babyshield.placeholder.com/analyze` (placeholder)
+**API Endpoint**: `https://api.brainsafe.placeholder.com/analyze` (placeholder)
 
 ## 📚 Component Documentation
 
@@ -174,7 +174,7 @@ Django-based REST API that provides AI-powered video content analysis and safety
 
 ### [SDK Agent](./sdk-agent/README.md)    "reduceSpeed": false,
 
-Integration toolkit that enables third-party platforms to incorporate BabyShield functionality.    "speedFactor": 0.75,
+Integration toolkit that enables third-party platforms to incorporate BrainSafe functionality.    "speedFactor": 0.75,
 
     "applyFilters": true,
 
