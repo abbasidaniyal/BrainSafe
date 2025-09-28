@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BabyShield Controls</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <span class="shield-icon">🛡️</span>
+        <h1>BabyShield</h1>
+      </div>
+      <div class="status-indicator" id="statusIndicator">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Main Controls -->
+    <div class="controls-section">
+      <div class="control-group">
+        <label class="toggle-switch">
+          <input type="checkbox" id="enabledToggle">
+          <span class="slider"></span>
+          <span class="label-text">Protection Enabled</span>
+        </label>
+      </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>BabyShield v1.0.0</p>
+      <p>Keeping children safe online</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
