@@ -41,35 +41,43 @@ def download_video(request):
             if "youtube.com" in url or "youtu.be" in url:
                 ydl_opts['format'] = 'best[height<=720]'
             
-            # Download video
+            # # Download video
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 # Download the video (first 10 seconds)
                 ydl.download([url])
                 
                 # List files in temp directory to confirm download
-                downloaded_files = os.listdir(temp_dir)
-                
-            
+                downloaded_files = os.listdir(temp_dir)            
             
             ### TODO: Send this path (video) to the multi-agent model and get the responses as below
             file_path = os.path.join(temp_dir, downloaded_files[0]) if downloaded_files else None
 
             data = process_video(file_path)
 
-            print(data)
-                
-            ### reduceSpeed: bool (if true, fractor given in speedFactor)
-            ### applyFilters: list of filters to apply ('tone-down', 'blur', 'grayscale') or empty
-            ### showWarning: bool (if true, warningMessage to be shown)
+            # ### reduceSpeed: bool (if true, fractor given in speedFactor)
+            # ### applyFilters: list of filters to apply ('tone-down', 'blur', 'grayscale') or empty
+            # ### showWarning: bool (if true, warningMessage to be shown)
             response_data = {
                 'reduceSpeed': data['playback_speed_analysis']['needs_slower_playback'],
                 'speedFactor': data['playback_speed_analysis']['recommended_factor'],
-                'applyFilters':  ['tone-down'] if data['color_contrast_analysis'].get('needs_reduced_contrast')  else [],
+                # 'applyFilters':  ['tone-down'] if data['color_contrast_analysis'].get('needs_reduced_contrast')  else [],
+                'applyFilters':  ['tone-down'] if data['color_contrast_analysis']['needs_reduced_contrast'] else [],
                 'showWarning': data['content_safety_analysis']['contains_inappropriate_content'],
                 'warningMessage': data['content_safety_analysis']['safety_message'] if data['content_safety_analysis']['contains_inappropriate_content'] else '',
                 # 'showWarning': True,
                 # 'warningMessage': 'This video contains fast movements that may be harmful to babies.',
             }
+
+            # response_data = {
+            #     'reduceSpeed': False,
+            #     'speedFactor': 1,
+            #     # 'applyFilters':  ['tone-down'] if data['color_contrast_analysis'].get('needs_reduced_contrast')  else [],
+            #     'applyFilters':  [],
+            #     'showWarning': True,
+            #     'warningMessage': "The video frames depict gameplay from a first-person shooter game, which includes realistic depictions of guns and potentially violent scenarios. Such content is not suitable for babies or toddlers, as it may be frightening, confusing, or distressing. Exposure to violence, even in animated or game form, is not recommended for very young children."
+            #     # 'showWarning': True,
+            #     # 'warningMessage': 'This video contains fast movements that may be harmful to babies.',
+            # }
    
 
             # Files are automatically cleaned up when temp directory context exits

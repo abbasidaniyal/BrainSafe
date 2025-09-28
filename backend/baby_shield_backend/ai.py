@@ -56,6 +56,7 @@ def get_response_adk(frames, audio_path):
             "type": "input_image",
             "image_url": f"data:image/jpeg;base64,{frame_b64}"
         })
+    print(f"{messages=}")
 
     json_data = {
         'app_name': APP_NAME,
@@ -174,7 +175,7 @@ def encode_frame_to_base64(frame: np.ndarray) -> str:
     
     return img_base64
 
-# def playback_speed_agent(frames: List[str]) -> Dict[str, Any]:
+def playback_speed_agent(frames: List[str]) -> Dict[str, Any]:
     """
     Agent 1: Analyze if video needs slower playback for babies.
     """
@@ -225,7 +226,7 @@ def encode_frame_to_base64(frame: np.ndarray) -> str:
     result = json.loads(response.output[0].content[0].text)
     return result
 
-# def color_contrast_agent(frames: List[str]) -> Dict[str, Any]:
+def color_contrast_agent(frames: List[str]) -> Dict[str, Any]:
     """
     Agent 2: Analyze if colors/contrast should be reduced for babies.
     """
@@ -277,7 +278,7 @@ def encode_frame_to_base64(frame: np.ndarray) -> str:
     result = json.loads(response.output[0].content[0].text)
     return result
 
-# def content_safety_agent(frames: List[str], audio_path: str = None) -> Dict[str, Any]:
+def content_safety_agent(frames: List[str], audio_path: str = None) -> Dict[str, Any]:
     """
     Agent 3: Analyze for explicit or inappropriate content for babies.
     """
@@ -364,53 +365,39 @@ def process_video(video_path: str) -> Dict[str, Any]:
         
         print("Running AI analysis agents...")
         
-        # # Run all three agents in parallel (conceptually)
-        # playback_analysis = playback_speed_agent(encoded_frames)
-        # contrast_analysis = color_contrast_agent(encoded_frames)
-        # safety_analysis = content_safety_agent(encoded_frames, audio_path)
-        
-        # Clean up temporary audio file
-        # if audio_path and os.path.exists(audio_path):
-        #     os.unlink(audio_path)
-        
-        # Compile results
-        # results = {
-        #     "video_path": video_path,
-        #     "analysis_timestamp": "2025-09-27",  # You could use datetime.now()
-        #     "frames_analyzed": len(frames),
-        #     "playback_speed_analysis": playback_analysis,
-        #     "color_contrast_analysis": contrast_analysis,
-        #     "content_safety_analysis": safety_analysis,
-        #     "overall_recommendation": {
-        #         "safe_for_babies": not safety_analysis.get("contains_inappropriate_content", True),
-        #         "requires_modifications": (
-        #             playback_analysis.get("needs_slower_playback", False) or 
-        #             contrast_analysis.get("needs_reduced_contrast", False)
-        #         ),
-        #         "summary": "Video analysis complete. Check individual agent results for detailed recommendations."
-        #     }
-        # }
-
-        
-        # results = {
-        #     "video_path": video_path,
-        #     "analysis_timestamp": "2025-09-27",  # You could use datetime.now()
-        #     "frames_analyzed": len(frames),
-        #     "playback_speed_analysis": playback_analysis,
-        #     "color_contrast_analysis": contrast_analysis,
-        #     "content_safety_analysis": safety_analysis,
-        #     "overall_recommendation": {
-        #         "safe_for_babies": not safety_analysis.get("contains_inappropriate_content", True),
-        #         "requires_modifications": (
-        #             playback_analysis.get("needs_slower_playback", False) or 
-        #             contrast_analysis.get("needs_reduced_contrast", False)
-        #         ),
-        #         "summary": "Video analysis complete. Check individual agent results for detailed recommendations."
-        #     }
-        # }
-        
-        # return results
-        return get_response_adk(encoded_frames, audio_path)
+        # use_adk = True
+        use_adk = False
+        if not use_adk:
+            # # Run all three agents in parallel (conceptually)
+            playback_analysis = playback_speed_agent(encoded_frames)
+            contrast_analysis = color_contrast_agent(encoded_frames)
+            safety_analysis = content_safety_agent(encoded_frames, audio_path)
+            
+            # Clean up temporary audio file
+            if audio_path and os.path.exists(audio_path):
+                os.unlink(audio_path)
+            
+            
+            # Compile results
+            results = {
+                "video_path": video_path,
+                "analysis_timestamp": "2025-09-27",  # You could use datetime.now()
+                "frames_analyzed": len(frames),
+                "playback_speed_analysis": playback_analysis,
+                "color_contrast_analysis": contrast_analysis,
+                "content_safety_analysis": safety_analysis,
+                "overall_recommendation": {
+                    "safe_for_babies": not safety_analysis.get("contains_inappropriate_content", True),
+                    "requires_modifications": (
+                        playback_analysis.get("needs_slower_playback", False) or 
+                        contrast_analysis.get("needs_reduced_contrast", False)
+                    ),
+                    "summary": "Video analysis complete. Check individual agent results for detailed recommendations."
+                }
+            }
+            return results
+        else:
+            return get_response_adk(encoded_frames, audio_path)
         
     except Exception as e:
         import traceback
@@ -420,4 +407,5 @@ def process_video(video_path: str) -> Dict[str, Any]:
             "error_message": str(e),
             "video_path": video_path,
             "analysis_timestamp": "2025-09-27"
+
         }

@@ -5,7 +5,6 @@ from google.adk.agents import Agent, ParallelAgent, SequentialAgent
 from google.adk.models.lite_llm import LiteLlm
 
 
-
 playback_speed_agent = Agent(
     model=LiteLlm(model="openai/gpt-4.1-mini"),
     name="playback_speed_agent",
@@ -36,7 +35,7 @@ playback_speed_agent = Agent(
 
 
 color_contrast_agent = Agent(
-    model=LiteLlm(model="openai/gpt-4.1-mini"),
+    model=LiteLlm(model="openai/gpt-4.1"),
     name="color_contrast_agent",
     output_key="color_contrast_analysis",
     description=(
