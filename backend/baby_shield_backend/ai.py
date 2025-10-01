@@ -368,10 +368,22 @@ def process_video(video_path: str) -> Dict[str, Any]:
         # use_adk = True
         use_adk = False
         if not use_adk:
+            from concurrent.futures import ThreadPoolExecutor, as_completed
+
+            with ThreadPoolExecutor(max_workers=3) as executor:
+                f_playback = executor.submit(playback_speed_agent, encoded_frames)
+                f_contrast = executor.submit(color_contrast_agent, encoded_frames)
+                f_safety = executor.submit(content_safety_agent, encoded_frames, audio_path)
+
+                playback_analysis = f_playback.result()
+                contrast_analysis = f_contrast.result()
+                safety_analysis = f_safety.result()
+
+
             # # Run all three agents in parallel (conceptually)
-            playback_analysis = playback_speed_agent(encoded_frames)
-            contrast_analysis = color_contrast_agent(encoded_frames)
-            safety_analysis = content_safety_agent(encoded_frames, audio_path)
+            # playback_analysis = playback_speed_agent(encoded_frames)
+            # contrast_analysis = color_contrast_agent(encoded_frames)
+            # safety_analysis = content_safety_agent(encoded_frames, audio_path)
             
             # Clean up temporary audio file
             if audio_path and os.path.exists(audio_path):
